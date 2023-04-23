@@ -2,15 +2,9 @@
 import openai
 import json
 import spacy
+from dotenv import load_dotenv
 
-
-def open_file(filepath):
-    with open(filepath, 'r', encoding='utf-8') as infile:
-        return infile.read()
-
-
-# nlp = spacy.load("en_core_web_md")
-OPENAI_API_KEY = open_file("openai_api_key.txt")
+load_dotenv()
 
 
 def embed_data(text, api_key=OPENAI_API_KEY):

@@ -6,14 +6,9 @@ import numpy as np
 import callgpt
 from callgpt import Chatbot
 import spacy
+from dotenv import load_dotenv
 
-
-def open_file(filepath):
-    with open(filepath, 'r', encoding='utf-8') as infile:
-        return infile.read()
-
-
-OPENAI_API_KEY = open_file("openai_api_key.txt")
+load_dotenv()
 
 
 def split_text_into_chunks(text, max_chunk_size):
@@ -45,7 +40,7 @@ def search_index(query_embedding):
         embedding = np.array(data["embedding"])
         score = np.dot(query_embedding, embedding.T) / \
             (np.linalg.norm(query_embedding) * np.linalg.norm(embedding, axis=1))
-        print(f"URL: {url}\nEmbedding: {embedding}\nScore: {score}\n")
+        # print(f"URL: {url}\nEmbedding: {embedding}\nScore: {score}\n")
         max_score_index = np.argmax(score)
         if score[max_score_index] > best_match_score:
             best_match_score = score[max_score_index]
@@ -63,14 +58,15 @@ def get_answer_using_chatbot(text_chunk, query, api_key):
     openai.api_key = api_key
     message = [{
         "role": "system",
-        "content": "You are a very helpful and extremely smart assistant. Please summarise the following chunk capturing its essence and explaining it."
+        "content": "You are a very helpful and extremely smart assistant. Please summarise the following text."
     },
         {"role": "assistant", "content": text_chunk},
         {"role": "user", "content": query}]  # Add the user's query to the messages list
 
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=message
+        messages=message,
+        temperature=0
     )
     model_response = response.choices[0].message.content
 

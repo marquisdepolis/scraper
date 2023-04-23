@@ -5,14 +5,9 @@ import embedder
 import indexer
 import query_handler
 import spacy
+from dotenv import load_dotenv
 
-
-def open_file(filepath):
-    with open(filepath, 'r', encoding='utf-8') as infile:
-        return infile.read()
-
-
-OPENAI_API_KEY = open_file("openai_api_key.txt")
+load_dotenv()
 MAX_CHUNK_SIZE = 2048
 
 
