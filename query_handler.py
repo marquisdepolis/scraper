@@ -63,7 +63,7 @@ def get_answer_using_chatbot(text_chunk, query, api_key):
     openai.api_key = api_key
     message = [{
         "role": "system",
-        "content": "You are a very helpful and extremely smart assistant"
+        "content": "You are a very helpful and extremely smart assistant. Please summarise the following chunk capturing its essence and explaining it."
     },
         {"role": "assistant", "content": text_chunk},
         {"role": "user", "content": query}]  # Add the user's query to the messages list
