@@ -43,12 +43,14 @@ def search_index(query_embedding):
 
     for url, data in index.items():
         embedding = np.array(data["embedding"])
-        score = np.dot(query_embedding, embedding) / \
-            (np.linalg.norm(query_embedding) * np.linalg.norm(embedding))
+        score = np.dot(query_embedding, embedding.T) / \
+            (np.linalg.norm(query_embedding) * np.linalg.norm(embedding, axis=1))
         print(f"URL: {url}\nEmbedding: {embedding}\nScore: {score}\n")
-        if score > best_match_score:
-            best_match_score = score
+        max_score_index = np.argmax(score)
+        if score[max_score_index] > best_match_score:
+            best_match_score = score[max_score_index]
             best_match_url = url
+
     return best_match_url
 
 
